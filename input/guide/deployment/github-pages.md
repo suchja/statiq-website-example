@@ -2,7 +2,7 @@ Badge: Web
 ---
 Statiq can be configured to deploy to [GitHub Pages](https://pages.github.com).
 
-Note that GitHub Pages must be activated for the target repository [according to the instructions](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site) before deploying to it.
+Note that GitHub Pages must be activated for the target repository [according to the instructions](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site) before deploying to it. Using the deployment pipeline described here requires that GitHub Pages are configured to be published from a branch [like described here](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-from-a-branch).
 
 The following [settings](xref:web-settings) are used to configure deployment to GitHub Pages:
 
@@ -11,7 +11,7 @@ The following [settings](xref:web-settings) are used to configure deployment to 
 - `GitHubUsername`: The username to use for deployment.
 - `GitHubPassword`: The password to use for deployment.
 - `GitHubToken`: The token to use for deployment (configure either this _or_ username and password). If deploying from a GitHub Action (see below), you should use a [computed value](xref:metadata-values#computed-values) to get the value of "GITHUB_TOKEN" for this value: `=> Config.FromSetting<string>("GITHUB_TOKEN")`.
-- `GitHubBranch`: The branch to deploy to (defaults to `gh-pages` but you should change this to the configured GitHub Pages branch such as `main` or `master` for organization sites).
+- `GitHubBranch`: The branch to deploy to (defaults to `gh-pages` but you should change this to the configured GitHub Pages branch such as `main` or `master` for organization sites). Be aware that the generated site will be pushed into this branch!
 
 It's customary to set one or more of these settings as an environment variable in continuous
 integration environments (particularly secrets like the password). In these scenarios you can either
@@ -70,6 +70,10 @@ to deploy a Statiq site:
 name: Deploy Site
 on: [push]
 
+# Sets permissions of the GITHUB_TOKEN to allow writing the content to the branch!
+permissions:
+    contents: write
+
 jobs:
   build:
     runs-on: windows-latest
@@ -90,3 +94,5 @@ Note that you don't need to call `DeployToGitHubPages` or `DeployToGitHubPagesBr
 `GitHubOwner`, `GitHubName`, `GitHubToken`, (and optionally `GitHubBranch`)
 settings elsewhere (like an `appsettings.json` file). These methods are just a convenience for setting those values. The
 GitHub deployment will automatically take place if those settings are defined, regardless of how or where they were set.
+
+Keep in mind that although this approach can use a GitHub Action (as shown above), there is an alternative way of using GitHub Actions for deployment to GitHub pages.
