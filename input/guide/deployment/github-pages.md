@@ -81,9 +81,9 @@ jobs:
     - uses: actions/checkout@master
       with:
         submodules: recursive
-    - uses: actions/setup-dotnet@v1
+    - uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '3.1.100' # SDK Version to use.
+        dotnet-version: '8.x' # SDK Version to use.
     - run: dotnet run -- deploy
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
