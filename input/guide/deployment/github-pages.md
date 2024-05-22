@@ -95,4 +95,6 @@ Note that you don't need to call `DeployToGitHubPages` or `DeployToGitHubPagesBr
 settings elsewhere (like an `appsettings.json` file). These methods are just a convenience for setting those values. The
 GitHub deployment will automatically take place if those settings are defined, regardless of how or where they were set.
 
+When using GitHub Actions (as shown above) there is a huge performance difference between running the deployment on `windows-latest` compared to `ubuntu-latest`. Using `ubuntu-latest` is around 3 times faster.
+
 Keep in mind that although this approach can use a GitHub Action (as shown above), there is an alternative way of using GitHub Actions for deployment to GitHub pages.
